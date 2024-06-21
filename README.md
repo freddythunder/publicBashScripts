@@ -1,3 +1,7 @@
+# Public Bash Scripts
+I'm going to migrate my bash scripts here so that I know where I put them
+You can use them too
+
 # makeApacheRedirects
 BASH script to set up HTTPS VirtualHosts with Certbot in Apache
 
