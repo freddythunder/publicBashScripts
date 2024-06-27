@@ -115,9 +115,12 @@ WWW="<IfModule mod_ssl.c>\n
 		DocumentRoot $DOCROOT\n
 		ErrorLog \${APACHE_LOG_DIR}/$FINALDOMAIN.error.log\n
 		CustomLog \${APACHE_LOG_DIR}/$FINALDOMAIN.access.log combined\n
-		\n
- 		Include /etc/letsencrypt/options-ssl-apache.conf\n
-		SSLCertificateFile /etc/letsencrypt/live/$SUBDOMAIN.$DOMAIN/fullchain.pem\n
+		\n"
+# only add this next line if the file already exists or else apache will not restart
+if [[ -f /etc/letsencrypt/options-ssl-apache.conf ]]; then
+ 	WWW=$WWW"	Include /etc/letsencrypt/options-ssl-apache.conf\n";
+fi
+WWW=$WWW"	SSLCertificateFile /etc/letsencrypt/live/$SUBDOMAIN.$DOMAIN/fullchain.pem\n
 		SSLCertificateKeyFile /etc/letsencrypt/live/$SUBDOMAIN.$DOMAIN/privkey.pem\n
 	</VirtualHost>\n
 </IfModule>\n";
