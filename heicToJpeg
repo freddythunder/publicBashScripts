@@ -1,0 +1,35 @@
+# I created this function to be added to .bash_rc or .bash_profile on mac systems
+# From wherever you call this function, it will create a JPEG from any HEIC format images it finds
+# add the kill keyword and it will also delete the HEIC after creating
+
+heic() {
+ if [[ "$1" =~ "help" ]]; then
+  echo "HEIC HELP"
+  echo "Call $ heic [kill] [help] to run the program"
+  echo "kill will remove the heic after convert"
+  echo "WARNING: Removed file will not go to the recycle bin,"
+  echo "it will go into the abyss and you will never see it again."
+  echo "I love you."
+  return
+ fi;
+
+ # search current dir for HEIC files
+ for f in $(pwd)/*.{heic,HEIC}; do 
+  # remove the extension
+  BASENAME=$(echo "$f" | sed 's/\..*$//')
+  # skip the wildcard if included in file listing
+  if [[ "$BASENAME" != *"*"* ]]; then
+   # get the new file name
+   NEW=$BASENAME".jpg"
+   # make sure it doesn't exist
+   if [ ! -f "$NEW" ]; then
+    # use mac app sips to convert format to JPEG
+    sips "$f" --setProperty format jpeg --out "$NEW"
+    # if they asked for it, remove the HEIC file
+    if [ "$1" == "kill" ]; then
+     rm "$f";
+    fi;
+   fi;
+  fi;
+ done;
+}
