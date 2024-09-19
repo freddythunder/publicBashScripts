@@ -26,7 +26,8 @@ heic() {
     # use mac app sips to convert format to JPEG
     sips "$f" --setProperty format jpeg --out "$NEW"
     # if they asked for it, remove the HEIC file
-    if [ "$1" == "kill" ]; then
+    # The following may require "=" or "==" or "-eq" depending on your shell (9/2024)
+    if [ "$1" = "kill" ]; then
      rm "$f";
     fi;
    fi;
