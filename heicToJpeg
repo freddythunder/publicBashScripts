@@ -14,7 +14,7 @@ heic() {
  fi;
 
  # search current dir for HEIC files
- for f in $(pwd)/*.{heic,HEIC}; do 
+ for f in $(pwd)/*.(heic|HEIC); do 
   # remove the extension
   BASENAME=$(echo "$f" | sed 's/\..*$//')
   # skip the wildcard if included in file listing
