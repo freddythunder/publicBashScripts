@@ -1,1 +1,36 @@
 # Create combined PDF from scanned fronts and backs
+# You can put this in one of your .bash files and relogin or `source .bash_profile` for instance to reload
+
+function makePDFFromScans() {
+	if [ -z "$1" ]; then
+		echo "This function sorts Even and Odd PDF scanned pages"
+		echo "It assumes the Even pages are backwards unless you say they are not"
+		echo "Usage: OddPages.pdf EvenPages.pdf Output.pdf [notreversed]"
+		return 1
+	fi
+	if [[ -f "$3" ]]; then
+		echo "$3 already exists; overwrite? [Y]"
+		read OVERWRITE
+		if [[ "$OVERWRITE" != "" && "$OVERWRITE" != "y" && "$OVERWRITE" != "Y" ]]; then
+			return 1
+		fi
+	fi
+	if [[ ! -f "$1" ]]; then
+		echo "Odd pages PDF not found"
+		return 1
+	fi
+	if [[ ! -f "$2" ]]; then
+		echo "Even pages PDF not found"
+		return 1
+	fi 
+	EVEN="$2"
+	if [ -z "$4" ]; then
+		pdftk "$2" cat end-1 output "TempReversed.pdf"
+		EVEN="TempReversed.pdf"
+	fi
+	pdftk A="$1" B="$EVEN" shuffle A B output "$3"
+	if [ "$EVEN" == "TempReversed.pdf" ]; then
+		rm "TempReversed.pdf"
+	fi
+	echo "$3 created. I love you."
+}
