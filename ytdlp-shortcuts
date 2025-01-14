@@ -1,0 +1,14 @@
+function youtube() {
+	if [ -z "$1" ]; then
+		echo "Usage: youtube [url/code] [playlist,song] (default is video)"
+		return 1
+	fi
+	echo $(date +"%Y%m%d %H%M")" "$1" "$2 >> /home/freddythunder/youtube.log
+	if [ "$2" == "playlist" ]; then
+		yt-dlp -x --audio-quality 0 --audio-format mp3 -o "%(playlist_index)03d.%(title)s.%(ext)s" -i $1
+	elif [ "$2" == "song" ]; then
+		yt-dlp -x --audio-quality 0 --audio-format mp3 -o "%(title)s.%(ext)s" $1
+	else 
+		yt-dlp $1
+	fi
+}
