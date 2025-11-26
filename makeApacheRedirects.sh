@@ -94,7 +94,7 @@ if [[ -f $VHOSTPATH && -f $VHOSTEN ]]; then
 		exit;
 	fi
 else
-	echo "The <VirtualHost> files did not write; not sure why.  Call Freddy.";
+	echo "The <VirtualHost> files did not write; not sure why.  Don't call Freddy.";
 	exit;
 fi
 
@@ -112,6 +112,7 @@ fi
 WWW="<IfModule mod_ssl.c>\n
 	<VirtualHost *:443>\n
 		ServerName $SUBDOMAIN.$DOMAIN\n
+		ServerAlias $DOMAIN\n
 		DocumentRoot $DOCROOT\n
 		ErrorLog \${APACHE_LOG_DIR}/$FINALDOMAIN.error.log\n
 		CustomLog \${APACHE_LOG_DIR}/$FINALDOMAIN.access.log combined\n
